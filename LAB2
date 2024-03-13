@@ -1,1 +1,87 @@
-aaa
+--PHONGBAN
+CREATE TABLE PHONGBAN (
+    MaPB varchar(2) PRIMARY KEY,
+    TenPhong nvarchar(20)
+);
+INSERT INTO PHONGBAN (MaPB, TenPhong)
+VALUES ('HC', N'Hành chính');
+INSERT INTO PHONGBAN (MaPB, TenPhong)
+VALUES ('NS', N'Nhân Sự');
+INSERT INTO PHONGBAN (MaPB, TenPhong)
+VALUES ('MK', N'Marketing');
+
+
+
+--NHANVIEN
+CREATE TABLE NHANVIEN (
+    MaNV varchar(5) PRIMARY KEY,
+    TenNV nvarchar(20) NOT NULL,
+    Ngaysinh smalldatetime NOT NULL CHECK (NgaySinh < GETDATE()),
+    Gioitinh char(1) NOT NULL default 'M' check(Gioitinh IN ('M', 'F')),
+	SoCMT char(9) UNIQUE
+	NOT NULL CHECK (SoCMT like '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
+    Diachi nvarchar(50),
+    Ngayvaolam smalldatetime NOT NULL default getdate() CHECK(Ngayvaolam<=getdate()),
+	Constraint Tuoi_20 CHECK(YEAR(Ngayvaolam) - YEAR(Ngaysinh) >= 20),
+    MaPB varchar(2) NOT NULL REFERENCES PHONGBAN(MaPB)
+);
+INSERT INTO NHANVIEN (MaNV, TenNV, Ngaysinh, SoCMT, Gioitinh, Diachi, Ngayvaolam, MaPB)
+VALUES ('NV01', N'Nguyễn Thị Bé', '1965-12-02', '012326782', 'F', N'30 Hàng Than', '1988-12-30', 'HC');
+INSERT INTO NHANVIEN (MaNV, TenNV, Ngaysinh, SoCMT, Gioitinh, Diachi, Ngayvaolam, MaPB)
+VALUES ('NV02', N'Trần A', '1980-01-23', '012199872', 'M', N'21 Lò Đúc', '2005-01-01', 'HC');
+INSERT INTO NHANVIEN (MaNV, TenNV, Ngaysinh, SoCMT, Gioitinh, Diachi, Ngayvaolam, MaPB)
+VALUES ('NV04', N'Lê Lan Anh', '1978-09-12', '023984852', 'F', N'33 Hàng Mã', '2005-01-01', 'NS');
+
+
+
+--LUONGDA
+CREATE TABLE LUONGDA (
+	MaDA varchar(8),
+	MaNV varchar(5) not null references NHANVIEN (MaNV),
+	NgayNhan smalldatetime DEFAULT getdate(),
+	Sotien numeric DEFAULT 0,
+	PRIMARY KEY(MaDA, MaNV),
+);
+INSERT INTO LUONGDA (MaDA, MaNV, NgayNhan, Sotien)
+VALUES ('DXD01', 'NV01', '2003-12-11', 1000000);
+INSERT INTO LUONGDA (MaDA, MaNV, NgayNhan, Sotien)
+VALUES ('DXD01', 'NV02', '2003-12-11', 1500000);
+INSERT INTO LUONGDA (MaDA, MaNV, NgayNhan, Sotien)
+VALUES ('DXD02', 'NV04', '2004-10-01', 1250000);
+
+
+
+--BAI TAPPPPPPPP
+--1  Viết một query để hiển thị thông tin về các bảng LUONGDA, NHANVIEN, PHONGBAN
+select *from LUONGDA;
+select *from NHANVIEN;
+select *from PHONGBAN;
+
+--2 Viết một query để hiển thị những nhân viên có giới tính là ‘F’.
+SELECT * 
+FROM NHANVIEN 
+WHERE Gioitinh = 'F';
+
+--3 Hiển thị tất cả các dự án, mỗi thứ một dòng.
+SELECT * FROM LUONGDA;
+
+--4 Hiển thị tổng lương của từng nhân viên. (Dùng mệnh đề GROUP BY)
+SELECT MaNV, SUM(Sotien) AS TongLuong
+FROM LUONGDA
+GROUP BY MaNV;
+
+--5 Hiển thị tất cả nhân viên ở một phòng ban cho trước.
+SELECT * 
+FROM NHANVIEN 
+WHERE MaPB = 'HC';
+
+--6 Hiển thị mức lương của những nhân viên ở phòng HC
+SELECT NV.MaNV, NV.TenNV, L.Sotien AS MucLuong
+FROM NHANVIEN NV, LUONGDA L
+WHERE NV.MaNV = L.MaNV AND NV.MaPB = 'HC';
+
+--7 Hiển thị số lượng nhân viên của từng phòng
+SELECT MaPB, COUNT(*) AS SoLuongNhanVien
+FROM NHANVIEN
+GROUP BY MaPB;
+
