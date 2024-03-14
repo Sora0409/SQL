@@ -85,3 +85,21 @@ SELECT MaPB, COUNT(*) AS SoLuongNhanVien
 FROM NHANVIEN
 GROUP BY MaPB;
 
+--8 Viết một query để hiển thị những nhân viên mà tham gia ít nhất vào 1 dự án
+select *
+from NHANVIEN
+where MaNV IN (select MaNV from LUONGDA);
+
+
+--9 Viết một query để hiển thị phòng ban có số lượng nhân viên nhiều nhất.
+select top 1 MaPB, COUNT(*) as SoLuongNhanVien
+from NHANVIEN
+group by MaPB
+order by COUNT(*) desc;
+
+--10 Tính tổng số lương của các nhân viên trong phòng HC.
+SELECT NH.MaNV, SUM(LD.Sotien) AS TongLuong
+FROM NHANVIEN NH, LUONGDA LD
+WHERE NH.MaPB = 'HC' AND NH.MaNV = LD.MaNV
+GROUP BY NH.MaNV;
+
