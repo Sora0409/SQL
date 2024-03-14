@@ -97,9 +97,12 @@ from NHANVIEN
 group by MaPB
 order by COUNT(*) desc;
 
---10 Tính tổng số lương của các nhân viên trong phòng HC.
-SELECT NH.MaNV, SUM(LD.Sotien) AS TongLuong
-FROM NHANVIEN NH, LUONGDA LD
-WHERE NH.MaPB = 'HC' AND NH.MaNV = LD.MaNV
-GROUP BY NH.MaNV;
+--10
+SELECT SUM(ld.Sotien) AS TongLuong
+FROM LUONGDA ld, NHANVIEN nv
+WHERE ld.MaNV = nv.MaNV
+AND nv.MaPB = 'HC'
+GROUP BY nv.MaPB;
+
+
 
