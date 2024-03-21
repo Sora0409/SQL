@@ -97,12 +97,47 @@ from NHANVIEN
 group by MaPB
 order by COUNT(*) desc;
 
---10
+--10 Tính tổng số lương của các nhân viên trong phòng HC.
 SELECT SUM(ld.Sotien) AS TongLuong
 FROM LUONGDA ld, NHANVIEN nv
 WHERE ld.MaNV = nv.MaNV
 AND nv.MaPB = 'HC'
 GROUP BY nv.MaPB;
+
+--11 Hiển tổng lương của các nhân viên có số CMT tận cùng bằng 9.
+SELECT SUM(Sotien) AS TongLuong
+FROM LUONGDA
+WHERE MaNV IN (SELECT MaNV FROM NHANVIEN WHERE RIGHT(SoCMT, 1) = '9');
+
+
+--12 Tìm nhân viên có số lương cao nhất.
+SELECT TOP 1 MaNV, SUM(Sotien) AS TongLuong
+FROM LUONGDA
+GROUP BY MaNV
+ORDER BY SUM(Sotien) DESC;
+
+--13. Tìm nhân viên ở phòng HC, có giới tính bằng 'F' và có mức lương >1200000
+SELECT *
+FROM NHANVIEN
+WHERE MaPB = 'HC' 
+AND Gioitinh = 'F' 
+AND MaNV IN (SELECT MaNV FROM LUONGDA WHERE Sotien > 1200000);
+
+--14 Tìm tổng lương trên từng phòng.
+SELECT MaPB,
+    (SELECT SUM(Sotien) 
+     FROM LUONGDA 
+     WHERE MaNV IN (SELECT MaNV FROM NHANVIEN WHERE MaPB = p.MaPB)
+    ) AS TongLuong
+FROM PHONGBAN p;
+--15 Liệt kê các dự án có ít nhất 2 người tham gia.
+SELECT MaDA, COUNT(MaNV) AS SoLuongNhanVien
+FROM LUONGDA
+GROUP BY MaDA
+HAVING COUNT(MaNV) >= 2;
+
+
+
 
 
 
