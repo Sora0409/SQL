@@ -182,6 +182,32 @@ UPDATE NHANVIEN
 SET Ngayvaolam = '1999-02-12'
 WHERE MaPB = 'HC';
 
+--24
+-- Tạo bảng LUONGDA_NEW
+CREATE TABLE LUONGDA_NEW (
+    MADA varchar(8),
+    MANV varchar(5),
+    NGAYNHAN smalldatetime,
+    SOTIEN numeric(18, 0),
+    GHICHU nvarchar(50)
+);
+
+-- Chèn dữ liệu vào bảng LUONGDA_NEW
+INSERT INTO LUONGDA_NEW (MADA, MANV, NGAYNHAN, SOTIEN, GHICHU)
+VALUES
+('DXD03', 'NV02', '2004-10-05 00:00:00', 2000000, N'Nhân viên NV02 nhận thêm dự án mới'),
+('DXD04', 'NV01', '2004-10-06 00:00:00', 3000000, NULL),
+('DXD05', 'NV01', '2004-10-07 00:00:00', 1450000, N'Dự án nội bộ của phòng Hành Chính');
+
+--25Dùng câu truy vấn SQL để thực hiện việc copy dữ liệu từ bảng LUONGDA_NEW sang bång LUONGDA
+INSERT INTO LUONGDA (MADA, MANV, NGAYNHAN, SOTIEN, GHICHU)
+SELECT MADA, MANV, NGAYNHAN, SOTIEN, GHICHU
+FROM LUONGDA_NEW;
+--26 Xóa phòng ban nào không có nhân viên hiện hữu
+DELETE FROM PHONGBAN
+WHERE MaPB NOT IN (SELECT DISTINCT MaPB FROM NHANVIEN);
+
+
 
 
 
