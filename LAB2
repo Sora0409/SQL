@@ -137,10 +137,52 @@ GROUP BY MaDA
 HAVING COUNT(MaNV) >= 2;
 
 
-11.5
+--11.5
 SELECT SUM(Sotien) AS TongLuong
 FROM LUONGDA
 WHERE MaNV IN (SELECT MaNV FROM NHANVIEN WHERE SoCMT LIKE '%9%');
+
+
+--16Liệt kê thông tin chi tiết của nhân viên có tên bắt đầu bằng kí tự “N”.
+SELECT *
+FROM NHANVIEN
+WHERE TenNV LIKE 'N%';
+
+--17Hiển thị thông tin chi tiết của nhân viên được nhận tiền dự án trong năm 2003.
+SELECT *
+FROM NHANVIEN
+WHERE MaNV IN (SELECT MaNV FROM LUONGDA WHERE YEAR(NgayNhan) = 2003);
+
+--18 Hiển thị thông tin chi tiết của nhân viên không tham gia bất cứ dự án nào.
+SELECT *
+FROM NHANVIEN
+WHERE MaNV NOT IN (SELECT DISTINCT MaNV FROM LUONGDA);
+
+--19 Xóa dự án có mã DXD02
+DELETE FROM LUONGDA
+WHERE MaDA = 'DXD02';
+
+--20 Xóa đi từ bảng LUONGDA những nhân viên có mức lương < 2000000
+DELETE FROM LUONGDA
+WHERE Sotien < 2000000;
+
+
+--21 Cập nhật lại lương cho những người tham gia dự án XDX01 thêm 10% lương cũ
+UPDATE LUONGDA
+SET Sotien = Sotien * 1.1
+WHERE MaDA = 'XDX01';
+
+
+--22 . Xoá các bản ghi tương ứng từ bảng NHANVIEN đối với những nhân viên không có mã nhân viên tồn tại trong bảng LUONGDA
+DELETE FROM NHANVIEN
+WHERE MaNV NOT IN (SELECT DISTINCT MaNV FROM LUONGDA);
+
+--23. Viết một truy vấn đặt lại ngày vào làm của tất cả nhân viên thuộc phòng HC là ngày 12/2/1999
+UPDATE NHANVIEN
+SET Ngayvaolam = '1999-02-12'
+WHERE MaPB = 'HC';
+
+
 
 
 
