@@ -208,10 +208,6 @@ DELETE FROM PHONGBAN
 WHERE MaPB NOT IN (SELECT DISTINCT MaPB FROM NHANVIEN)
 
 
-Msg 547, Level 16, State 0, Line 1
-The UPDATE statement conflicted with the CHECK constraint "Tuoi_20". The conflict occurred in database "QLDA", table "dbo.NHANVIEN".
-The statement has been terminated.
-
 
 
 
