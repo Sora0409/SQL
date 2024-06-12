@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng Cà Phê</title>
+    <style>
+        body {
+            background-image: url('your-background-image-url'); /* Thay thế bằng URL của hình nền */
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: blue;
+        }
+        h1 {
+            color: blue;
+            font-size: 48px;
+        }
+        p {
+            font-size: 24px;
+        }
+        .price {
+            color: red;
+            font-size: 20px;
+        }
+        img {
+            max-width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chào mừng cửa hàng của chúng tôi</h1>
+    <p>Ở đây có bán cà phê</p>
+    <img src="your-coffee-image-url" alt="Cà phê"> <!-- Thay thế bằng URL của hình ảnh cà phê -->
+    <p>Cà phê hợp với người gu mạnh</p>
+    <p class="price">Cà Phê Việt Nam Giá: 15.000</p>
+</body>
+</html>
