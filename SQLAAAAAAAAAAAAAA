@@ -52,7 +52,8 @@ USE QuanLySinhVien;
 GO
 
 -- Thêm dữ liệu vào bảng Khoa trong một dòng lệnh
-INSERT INTO Khoa (MAKH, TENKH) VALUES
+INSERT INTO Khoa (MAKH, TENKH) 
+VALUES
 ('01', 'Khoa CNTT'),
 ('02', 'Khoa Kinh Te');
 GO
