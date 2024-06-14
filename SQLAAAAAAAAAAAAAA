@@ -1,0 +1,73 @@
+
+USE QuanLySinhVien;
+GO
+
+
+
+CREATE TABLE Khoa (
+    MAKH CHAR(2) PRIMARY KEY,
+    TENKH NVARCHAR(50)
+);
+GO
+
+
+CREATE TABLE SinhVien (
+    MASV CHAR(3) PRIMARY KEY,
+    HOSV NVARCHAR(15),
+    TENSV NVARCHAR(15),
+    PHAI BIT,
+    NGAYSINH DATETIME,
+    NOISINH NVARCHAR(50),
+    MAKH CHAR(2),
+    HOCBONG INT,
+    FOREIGN KEY (MAKH) REFERENCES Khoa(MAKH)
+);
+GO
+
+CREATE TABLE MonHoc (
+    MAMH CHAR(3) PRIMARY KEY,
+    TENMH NVARCHAR(50),
+    SOTIET INT
+);
+GO
+
+
+CREATE TABLE KetQua (
+    MASV CHAR(3),
+    MAMH CHAR(3),
+    DIEM REAL,
+    PRIMARY KEY (MASV, MAMH),
+    FOREIGN KEY (MASV) REFERENCES SinhVien(MASV),
+    FOREIGN KEY (MAMH) REFERENCES MonHoc(MAMH)
+);
+GO
+
+-- Thêm dữ liệu vào bảng Khoa
+INSERT INTO Khoa (MAKH, TENKH) VALUES ('01', 'Khoa CNTT');
+INSERT INTO Khoa (MAKH, TENKH) VALUES ('02', 'Khoa Kinh Te');
+GO
+
+-- Thêm dữ liệu vào bảng SinhVien
+INSERT INTO SinhVien (MASV, HOSV, TENSV, PHAI, NGAYSINH, NOISINH, MAKH, HOCBONG)
+VALUES
+('001', 'Nguyen', 'An', 1, '2000-01-01', 'Ha Noi', '01', 1000000),
+('002', 'Tran', 'Binh', 0, '1999-05-15', 'Hai Phong', '02', 2000000);
+GO
+
+-- Thêm dữ liệu vào bảng MonHoc
+INSERT INTO MonHoc (MAMH, TENMH, SOTIET)
+VALUES
+('MH1', 'Toan', 30),
+('MH2', 'Ly', 25);
+GO
+
+-- Thêm dữ liệu vào bảng KetQua
+INSERT INTO KetQua (MASV, MAMH, DIEM)
+VALUES
+('001', 'MH1', 8.5),
+('001', 'MH2', 7.0),
+('002', 'MH1', 9.0),
+('002', 'MH2', 6.5);
+GO
+
+
