@@ -1,0 +1,77 @@
+--1. Truy vấn danh sách sinh viên cùng với tên khoa của họ: Truy vấn này sẽ sử dụng  phép JOIN giữa bảng SinhVien và bảng Khoa.  
+SELECT SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV, Khoa.TENKH  FROM SinhVien  
+
+JOIN Khoa ON SinhVien.MAKH = Khoa.MAKH;
+
+--2. Truy vấn danh sách sinh viên và điểm số của họ trong từng môn học: Truy vấn  này sẽ sử dụng phép JOIN giữa bảng SinhVien, bảng KetQua và bảng MonHoc.
+SELECT SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV, MonHoc.TENMH,  KetQua.DIEM  
+
+FROM SinhVien  
+
+JOIN KetQua ON SinhVien.MASV = KetQua.MASV  
+
+JOIN MonHoc ON KetQua.MAMH = MonHoc.MAMH;  
+
+--3. Truy vấn danh sách sinh viên có học bổng từ 1,000,000 đồng trở lên.  
+SELECT MASV, HOSV, TENSV, HOCBONG  
+
+FROM SinhVien  
+
+WHERE HOCBONG >= 1000000;  
+
+--4. Truy vấn tên các môn học cùng với số lượng sinh viên đăng ký học mỗi môn:  truy vấn này sẽ sử dụng GROUP BY và COUNT.  
+SELECT MonHoc.TENMH, COUNT(KetQua.MASV) AS SoLuongSinhVien  FROM MonHoc  
+
+JOIN KetQua ON MonHoc.MAMH = KetQua.MAMH  
+
+GROUP BY MonHoc.TENMH;  
+
+
+--5. Truy vấn danh sách sinh viên và điểm trung bình của họ trong các môn học: Truy  vấn này sẽ sử dụng GROUP BY và AVG.
+SELECT SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV, AVG(KetQua.DIEM) AS  DiemTrungBinh  
+
+FROM SinhVien  
+
+JOIN KetQua ON SinhVien.MASV = KetQua.MASV  
+
+GROUP BY SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV;  
+
+
+--6. Truy vấn danh sách các khoa và số lượng sinh viên trong mỗi khoa.  
+SELECT Khoa.TENKH, COUNT(SinhVien.MASV) AS SoLuongSinhVien  FROM Khoa  
+
+LEFT JOIN SinhVien ON Khoa.MAKH = SinhVien.MAKH  
+
+--7 Truy vấn danh sách sinh viên và số lượng môn học mà mỗi sinh viên đã đăng ký  học.  
+SELECT SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV, COUNT(KetQua.MAMH) AS  SoLuongMonHoc  
+
+FROM SinhVien  
+
+JOIN KetQua ON SinhVien.MASV = KetQua.MASV  
+
+GROUP BY SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV;
+
+--8. Truy vấn danh sách sinh viên có điểm môn "Toán" lớn hơn 8.  
+SELECT SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV, KetQua.DIEM  FROM SinhVien  
+
+JOIN KetQua ON SinhVien.MASV = KetQua.MASV  
+
+JOIN MonHoc ON KetQua.MAMH = MonHoc.MAMH  
+
+WHERE MonHoc.TENMH = 'Toan' AND KetQua.DIEM > 8;  
+
+--9. Truy vấn danh sách sinh viên và tuổi của họ (dựa trên ngày sinh).  
+SELECT MASV, HOSV, TENSV, DATEDIFF(YEAR, NGAYSINH, GETDATE()) AS Tuoi  FROM SinhVien;  
+
+
+--10 Truy vấn danh sách sinh viên và điểm cao nhất mà mỗi sinh viên đã đạt được.  
+SELECT SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV, MAX(KetQua.DIEM) AS  DiemCaoNhat  
+
+FROM SinhVien  
+
+JOIN KetQua ON SinhVien.MASV = KetQua.MASV  
+
+GROUP BY SinhVien.MASV, SinhVien.HOSV, SinhVien.TENSV;
+
+
+  
